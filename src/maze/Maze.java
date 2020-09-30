@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class Maze {
     private final int height;
     private final int width;
+    private boolean pathCreated = false;
 
     private Block[][] matrix;
 
@@ -15,6 +16,8 @@ public class Maze {
         this.width = width;
         MazeGenerator mazeGenerator = new MazeGenerator(height, width);
         matrix = mazeGenerator.getMaze();
+        Pathfinder pathfinder = new Pathfinder(matrix);
+        matrix = pathfinder.findPath();
     }
 
     public Maze(String string) {
@@ -31,9 +34,19 @@ public class Maze {
         }
     }
 
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public Block getBlock(int x, int y) {
+        return matrix[y][x];
+    }
+
     public String escapeToString() {
-        Pathfinder pathfinder = new Pathfinder(matrix);
-        matrix = pathfinder.findPath();
         return getString(true);
     }
 

@@ -4,6 +4,7 @@ import maze.Block;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -29,7 +30,8 @@ public class Pathfinder {
     public Block[][] findPath() {
         open.add(start);
         while (true) {
-            open.sort(Comparator.reverseOrder());
+            //open.sort(Comparator.reverseOrder());
+            Collections.sort(open);
             Node curr = open.get(0);
             open.remove(curr);
             closed.add(curr);
@@ -80,8 +82,9 @@ public class Pathfinder {
                 if (!neighbour.isTraversable() || closed.contains(neighbour)) {
                     continue;
                 }
+                neighbour.setBlock(Block.CHECKED);
                 double gCost = p1.distance(p2) + node.getgCost();
-                double hCost = end.getPos().distance(p2);
+                double hCost = distanceToEnd(neighbour);//end.getPos().distance(p2);
                 double fCost = gCost + hCost;
                 if (open.contains(neighbour)) {
                     if (neighbour.getfCost() > fCost) {
@@ -110,5 +113,9 @@ public class Pathfinder {
         } while (parent != null);
     }
 
-
+    private double distanceToEnd(Node node) {
+        Point endPoint = end.getPos();
+        Point p = node.getPos();
+        return Math.abs(endPoint.x - p.x) + Math.abs(endPoint.y - p.y);
+    }
 }

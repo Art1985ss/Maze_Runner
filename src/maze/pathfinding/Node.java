@@ -85,7 +85,10 @@ public class Node implements Comparable<Node> {
     public int compareTo(Node node) {
         int result = Double.compare(fCost, node.fCost);
         if (result == 0) {
-            return Double.compare(hCost, node.hCost);
+            result = Double.compare(hCost, node.hCost);
+        }
+        if (result == 0) {
+            return Double.compare(gCost, node.gCost);
         }
         return result;
     }
